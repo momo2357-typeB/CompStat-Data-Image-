@@ -4,8 +4,8 @@ getwd()
 list.files("archive", recursive = TRUE)
 
 # Dateipfade anpassen
-datei1 <- "archive/fashion-mnist_train1.csv"
-datei2 <- "archive/fashion-mnist_train2.csv"
+datei1 <- "data/fashion-mnist_train1.csv"
+datei2 <- "data/fashion-mnist_train2.csv"
 
 # Beide Teile einlesen
 data1 <- read.csv(datei1)
