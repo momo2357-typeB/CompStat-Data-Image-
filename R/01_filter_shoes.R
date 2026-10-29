@@ -51,3 +51,27 @@ sum(is.na(shoes))
 # Prüfen, ob nur die Kategorien 7 und 9 vorhanden sind
 unique(shoes$label)
 
+
+# Gefilterten Datensatz als CSV speichern
+
+write.csv(shoes,
+          file = "data/fashion-mnist_shoes_train.csv",
+          row.names = FALSE)
+
+file.exists("data/fashion-mnist_shoes_train.csv")
+
+
+# Neue CSV einlesen
+shoes_check <- read.csv("data/fashion-mnist_shoes_train.csv")
+
+# Dimension überprüfen
+dim(shoes_check)
+
+# Klassen überprüfen
+table(shoes_check$label)
+
+# Fehlende Werte überprüfen
+sum(is.na(shoes_check))
+
+file.info("data/fashion-mnist_shoes_train.csv")$size / 1024^2
+
