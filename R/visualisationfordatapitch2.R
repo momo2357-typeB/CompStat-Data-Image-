@@ -108,9 +108,13 @@ png("Plot_Slide5_Spatial_Centroids_Expanded.png", width = 1800, height = 1200, r
 
 par(mar = c(4.5, 4.5, 3, 2), bg = "white")
 
-# 28x28 Rasterkoordinaten
-grid_x <- rep(1:img_dim, each = img_dim)
-grid_y <- rep(1:img_dim, times = img_dim)
+# KORREKTE ZUORDNUNG:
+grid_x <- rep(1:img_dim, times = img_dim)  # Spalten 1 bis 28 (horizontal)
+grid_y <- rep(1:img_dim, each = img_dim)   # Zeilen 1 bis 28 (vertikal)
+
+image_sums <- rowSums(X)
+cx <- as.vector(X %*% grid_x) / image_sums
+cy <- as.vector(X %*% grid_y) / image_sums
 
 # Vektorisierte Berechnung des optischen Schwerpunkts je Bild
 image_sums <- rowSums(X)
@@ -119,6 +123,7 @@ cy <- as.vector(X %*% grid_y) / image_sums
 
 # Klassenmittelwerte (Zentroide)
 mean_cx_7 <- mean(cx[y == 7]); mean_cy_7 <- mean(cy[y == 7])
+
 mean_cx_9 <- mean(cx[y == 9]); mean_cy_9 <- mean(cy[y == 9])
 
 plot(cx, cy, type = "n",
