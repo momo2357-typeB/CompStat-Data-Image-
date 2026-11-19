@@ -1,0 +1,81 @@
+---
+title: "Computational Statistics - Topic 12: Image Data (Fashion-MNIST)"
+subtitle: "107.258 Computational Statistics (WS 2026/27, TU Wien)"
+author:
+  - "Justus Becker"
+  - "Samuel Oberascher"
+  - "Roman Zulehner"
+  - "Lisa Stadler"
+  - "Romeo Agha Mohammadi Sareshgi"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = "center",
+  out.width = "85%"
+)
+set.seed(107258)
+```
+
+# Abstract
+
+*Summary of research questions, PCA/SVD dimensionality reduction, outlier diagnostics, classification performance, and numerical insights (target report length: 8--12 pages).*
+
+# Introduction
+
+*Motivation, problem statement (Sneaker Class 7 vs. Ankle boot Class 9), and hypotheses.*
+
+# Data and Reproducibility
+
+*Dataset description, license, data dictionary, normalization to $[0, 1]$, and strict train/test separation (`fashion-mnist_test.csv` locked until final evaluation).*
+
+# Methods
+
+## Exploratory Data Analysis (EDA)
+
+*Mean/variance images, multivariate PC1 vs. PC2 score plots with confidence ellipses, and cumulative variance uncertainty.*
+
+## Dimensionality Reduction via Thin-SVD
+
+*Centered pixel matrix $X = U \Sigma V^\top$, selection of $K$ components ($\ge 80\%$ variance and CV), and morphological interpretation of $28 \times 28$ eigenimages.*
+
+## Outlier Detection and Sensitivity Analysis
+
+*Multivariate score-space screening via `CovMcd` ($\chi^2_{K, 0.975}$), ROBPCA (`PcaHubert`), GLM influence diagnostics (deviance residuals, hat values, Cook's distance), and coefficient/prediction comparison (`glm` vs. filtered vs. `glmrob`).*
+
+## Downstream Classification and Cross-Validation
+
+*Comparison of `glm`, `glmnet`, `glmrob`, and raw-pixel baseline under 5-fold cross-validation (ROC-AUC, PR-AUC, calibration).*
+
+# Results and Diagnostics
+
+*Tables (`knitr::kable` / `texreg`), figures, and final locked test-set evaluation.*
+
+# Numerical Linear Algebra and Optimization Commentary
+
+## Numerical Linear Algebra
+
+*Avoiding $X^\top X$ due to $\kappa(X^\top X) = \kappa(X)^2$, catastrophic cancellation in IEEE 754 arithmetic, zero-variance border pixels, and `microbenchmark` runtime comparison.*
+
+## Optimization and Convergence
+
+*IRLS / Newton-Raphson in `glm()`, local quadratic convergence, quasi-complete separation, and the Hauck-Donner effect motivating regularization in `glmnet`.*
+
+# Ethics and Limitations
+
+*Commercial catalog bias, $28 \times 28$ grayscale resolution loss, and lack of translation/rotation invariance.*
+
+# Reproducibility and Session Information
+
+```{r session-info}
+sessionInfo()
+```
