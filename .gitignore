@@ -58,3 +58,14 @@ rsconnect/
 ./test/
 
 # End of https://www.toptal.com/developers/gitignore/api/r
+
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+### Temporary / Backup files ###
+*~
+*.bak
+*.swp
