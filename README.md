@@ -4,15 +4,17 @@
 **Group:** Group 12 — Topic 12: Image Data (Zalando Fashion-MNIST)  
 **Instructors:** Prof. Klaus Nordhausen, Ass.-Prof. Laura Vana Gür  
 
-## Team Members & Responsibilities
+## Team Members, Responsibilities & Deadlines
 
-| Member | Focus Area | Primary Deliverables | Primary Branch |
-| :--- | :--- | :--- | :--- |
-| **Justus Becker** | PCA/SVD & Numerical Linear Algebra | Git setup, `.Rproj`, `main.R`, `R/03_pca_svd.R`, Linear Algebra commentary | `feature/pca-svd` |
-| **Samuel Oberascher** | Data Wrangling, EDA & Reproducibility | `R/01_data_prep.R`, `R/02_eda_plots.R`, Data Dictionary & test-set lock check | `feature/data-wrangling`, `feature/eda-visuals` |
-| **Roman Zulehner** | Outlier Detection & Sensitivity Analysis | `R/04_outliers_robust.R` (`CovMcd`, `PcaHubert`, Cook's distance, `glmrob` comparison) | `feature/outliers-robust` |
-| **Lisa Stadler** | Downstream Modeling, CV & Optimization | `R/05_models_cv.R` (`glm`, `glmnet`, `glmrob`, raw-pixel baseline, 5-fold CV), Optimization commentary | `feature/models-cv` |
-| **Romeo Agha Mohammadi Sareshgi** | Report Integration, Benchmarking & Ethics | `report/final_report.Rmd`, `microbenchmark` timings, Ethics & Limitations | `feature/report-rmd` |
+| Member | Focus Area | Primary Deliverables | Primary Branch | Target Deadline |
+| :--- | :--- | :--- | :--- | :--- |
+| **Samuel Oberascher** | Data Wrangling, EDA & Reproducibility | `R/01_data_prep.R` (`train_prepared.rds` incl. `[0, 1]` scaling & 5-fold CV split), `R/02_eda_plots.R` (mean/variance maps, histograms/boxplots, uncertainty visualization), Data Dictionary & license in `README.md`, report text (*Data & EDA*) | `feature/data-wrangling`, `feature/eda-visuals` | Data RDS: **25.11.2026** / EDA: **29.11.2026** |
+| **Justus Becker** | Project Lead, PCA/SVD & Numerical Linear Algebra | Git setup, `.Rproj`, `main.R`, `R/03_pca_svd.R` (Thin-SVD, scree plot, 4–6 eigenimages, `pca_svd.rds`), PR reviews, report text (*PCA & Numerical Linear Algebra*) | `feature/pca-svd` | **06.12.2026** |
+| **Romeo Agha Mohammadi Sareshgi** | Benchmarking, Report Integration & Ethics | Part 1: `microbenchmark` (`svd()` vs. `eigen(crossprod())`) & *Ethics & Limitations* text. Part 2: Integrate all team texts/plots/tables into `report/final_report.Rmd` (8–12 pp., `kable`/`texreg`, `sessionInfo()`) | `feature/report-rmd` | Part 1: **06.12.2026** / Draft: **03.01.2027** |
+| **Roman Zulehner** | Outlier Detection, ROBPCA & Sensitivity (`glmrob`) | `R/04_outliers_robust.R` (`CovMcd` in PC score space, `PcaHubert` + flagged shoe plots, deviance residuals, Cook's distance, full `glmrob` & sensitivity comparison table), report text (*Outliers & Sensitivity*) | `feature/outliers-robust` | **20.12.2026** |
+| **Lisa Stadler** | Downstream Modeling, 5-Fold CV & Optimization | `R/05_models_cv.R` (5-fold CV for `glm`, `glmnet`, raw-pixel baseline; ROC-AUC, PR-AUC, calibration plots, confusion matrix), report text (*Modeling & Optimization/Convergence*), final locked test-set evaluation (Sprint 5) | `feature/models-cv` | **20.12.2026** |
+
+> **Team Rule:** Every member drafts the report text and interpretation for their own section so `final_report.Rmd` integration stays balanced. All work is merged into `main` via Pull Requests only.
 
 ---
 
