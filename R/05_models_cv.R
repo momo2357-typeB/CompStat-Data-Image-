@@ -7,8 +7,8 @@
 #   - Fit binary logistic regression models on top-K PC scores:
 #       1) Standard Logit: stats::glm(..., family = binomial)
 #       2) Regularized Logit: glmnet::cv.glmnet(..., family = "binomial")
-#       3) Robust Logit: robustbase::glmrob(..., family = binomial)
-#       4) Baseline Logit on selected raw pixels
+#       3) Baseline Logit on selected raw pixels (justifies PCA reduction)
+#     (Note: Robust Logit glmrob & sensitivity comparison are handled in R/04_outliers_robust.R)
 #   - Evaluate via 5-fold CV strictly on training data (ROC-AUC, PR-AUC,
 #     calibration plots, confusion matrix)
 #   - Inspect IRLS convergence / Hauck-Donner diagnostics
