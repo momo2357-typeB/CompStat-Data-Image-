@@ -65,7 +65,7 @@ centered   <- center_pixel_matrix(X_train)
 X_centered <- centered$X_centered
 pixel_mean <- centered$center
 
-# Quick diagnostic summary
+# diagnostic summary
 pixel_sds        <- apply(X_train, 2L, sd)
 n_zero_var       <- sum(pixel_sds == 0)
 n_near_zero_var  <- sum(pixel_sds < 0.01)
