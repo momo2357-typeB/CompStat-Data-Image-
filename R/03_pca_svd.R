@@ -4,8 +4,8 @@
 # Lead:   Justus Becker (PCA/SVD & Numerical Linear Algebra)
 # ==============================================================================
 # Purpose:
-#   1) Load & center training pixel matrix X strictly on training observations
-#   2) Compute Thin-SVD (X_c = U Sigma V^T) without forming X^T X
+#   1) Load & center training pixel matrix X strictly on training observations ( done )
+#   2) Compute Thin-SVD (X_c = U Sigma V^T) without forming X^T X ( done )
 #   3) Select K components systematically (>= 80% variance + scree plot)
 #   4) Reconstruct & plot leading columns of V as upright 28x28 eigenimages
 #   5) Save PCA/SVD results to output/models/pca_svd.rds for downstream modules
