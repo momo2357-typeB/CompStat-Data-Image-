@@ -207,3 +207,79 @@ scree_file <- plot_scree_cumulative(
   K_80          = pca_res$K_80
 )
 message("[03_pca_svd] Saved scree plot to: ", scree_file)
+
+# ------------------------------------------------------------------------------
+# Step 3: Reconstruct & plot leading columns of V as upright 28x28 Eigenimages
+# ------------------------------------------------------------------------------
+
+#' Reshape a 784-length loading vector into an upright 28x28 matrix for image()
+#'
+#' Base R image() places row 1 at the bottom and columns along the x-axis.
+#' Applying t(apply(mat, 2, rev)) aligns Fashion-MNIST shoes upright.
+vec_to_upright_matrix <- function(vec) {
+  stopifnot(is.numeric(vec), length(vec) == 784L)
+  mat <- matrix(vec, nrow = 28L, ncol = 28L, byrow = TRUE)
+  t(apply(mat, 2L, rev))
+}
+
+#' Plot the first n_pcs eigenimages (columns of V) with a diverging color scale
+plot_eigenimages <- function(
+    V,
+    var_explained,
+    n_pcs    = 6L,
+    out_path = file.path("output", "figures", "fig_03_eigenimages.png")
+) {
+  stopifnot(is.matrix(V), nrow(V) == 784L, n_pcs >= 1L, n_pcs <= ncol(V))
+  dir.create(dirname(out_path), recursive = TRUE, showWarnings = FALSE)
+
+  # Diverging palette: Blue = negative loading, White = zero, Red = positive loading
+  div_pal <- colorRampPalette(c("#2166ac", "#f7f7f7", "#b2182b"))(256L)
+
+  png(filename = out_path, width = 1200, height = 820, res = 130)
+  op <- par(mfrow = c(2, 3), mar = c(1.5, 1.5, 3.0, 1.5), oma = c(2.5, 0.5, 2.5, 0.5))
+  on.exit({
+    par(op)
+    dev.off()
+  }, add = TRUE)
+
+  for (j in seq_len(n_pcs)) {
+    eigen_mat <- vec_to_upright_matrix(V[, j])
+    max_abs   <- max(abs(eigen_mat))
+
+    image(
+      x    = 1:28,
+      y    = 1:28,
+      z    = eigen_mat,
+      zlim = c(-max_abs, max_abs),
+      col  = div_pal,
+      axes = FALSE,
+      xlab = "",
+      ylab = "",
+      main = sprintf("Eigenimage PC%d (%.1f%% var.)", j, var_explained[j] * 100)
+    )
+    box(col = "gray40")
+  }
+
+  mtext("Leading 6 Eigenimages (Columns of V, 28x28)", outer = TRUE, side = 3, line = 0.6, cex = 1.25, font = 2)
+  mtext("Color scale: Blue = negative loading | White = 0 | Red = positive loading", outer = TRUE, side = 1, line = 0.8, cex = 0.95, col = "gray30")
+
+  invisible(out_path)
+}
+
+eigen_file <- plot_eigenimages(
+  V             = pca_res$v,
+  var_explained = pca_res$var_explained,
+  n_pcs         = 6L
+)
+message("[03_pca_svd] Saved eigenimages plot to: ", eigen_file)
+
+# Print class-wise mean PC1..PC6 scores to help interpret signs (Sneaker=0 vs Boot=1)
+mean_sneaker <- colMeans(pca_res$scores[y_train == 0L, 1:6, drop = FALSE])
+mean_boot    <- colMeans(pca_res$scores[y_train == 1L, 1:6, drop = FALSE])
+message("[03_pca_svd] Mean PC1..PC6 scores (Sneaker vs. Ankle boot):")
+for (j in 1:6) {
+  message(sprintf(
+    "  PC%d: Sneaker = %+6.2f | Ankle boot = %+6.2f | Diff (Boot - Sneaker) = %+6.2f",
+    j, mean_sneaker[j], mean_boot[j], mean_boot[j] - mean_sneaker[j]
+  ))
+}
