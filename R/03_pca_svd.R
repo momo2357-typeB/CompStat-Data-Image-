@@ -283,3 +283,51 @@ for (j in 1:6) {
     j, mean_sneaker[j], mean_boot[j], mean_boot[j] - mean_sneaker[j]
   ))
 }
+
+# ------------------------------------------------------------------------------
+# Step 4: Numerical conditioning diagnostics & save pca_svd.rds for downstream use
+# ------------------------------------------------------------------------------
+
+#' Compute effective numerical rank and condition numbers kappa(X) vs kappa(X^T X)
+compute_conditioning_summary <- function(d, tol = 1e-10) {
+  stopifnot(is.numeric(d), length(d) >= 2L)
+  d_pos   <- d[d > tol]
+  kappa_X <- max(d_pos) / min(d_pos)
+
+  list(
+    effective_rank = length(d_pos),
+    d_max          = max(d_pos),
+    d_min_pos      = min(d_pos),
+    d_smallest     = min(d),
+    kappa_X        = kappa_X,
+    kappa_XtX      = kappa_X^2
+  )
+}
+
+cond_info <- compute_conditioning_summary(pca_res$d)
+message(sprintf(
+  "[03_pca_svd] Conditioning -> effective rank: %d/%d | kappa(X_c) = %.2e | kappa(X_c^T X_c) = %.2e",
+  cond_info$effective_rank, length(pca_res$d), cond_info$kappa_X, cond_info$kappa_XtX
+))
+
+# Save compact PCA/SVD bundle for Roman (04_outliers_robust.R) and Lisa (05_models_cv.R)
+pca_bundle <- list(
+  center           = pixel_mean,
+  d                = pca_res$d,
+  var_explained    = pca_res$var_explained,
+  cum_var          = pca_res$cum_var,
+  K_80             = pca_res$K_80,
+  K_90             = pca_res$K_90,
+  K_95             = pca_res$K_95,
+  v_top            = pca_res$v[, seq_len(pca_res$K_90), drop = FALSE],
+  scores_K80       = pca_res$scores[, seq_len(pca_res$K_80), drop = FALSE],
+  y_train          = y_train,
+  n_zero_var       = n_zero_var,
+  n_near_zero_var  = n_near_zero_var,
+  conditioning     = cond_info
+)
+
+rds_path <- file.path("output", "models", "pca_svd.rds")
+dir.create(dirname(rds_path), recursive = TRUE, showWarnings = FALSE)
+saveRDS(pca_bundle, file = rds_path)
+message("[03_pca_svd] Saved PCA/SVD bundle to: ", rds_path)
