@@ -11,6 +11,8 @@
 # ==============================================================================
 
 #' Plot a single 784-length Fashion-MNIST pixel vector upright (28x28)
+#' 
+#' This function takes a numeric vector of length 784 (representing a flattened 28x28 grayscale image) and plots it in an upright orientation using Base R's `image()` function. The pixel values are expected to be normalized to the range [0, 1], where 0 represents black and 1 represents white.
 #'
 #' @param pixel_vec Numeric vector of length 784 (row-major order).
 #' @param title Optional plot title.
